@@ -9,6 +9,7 @@ import 'package:chat_app_auth/utils/resources/font_size.dart';
 import 'package:chat_app_auth/utils/resources/icons_constant.dart';
 import 'package:chat_app_auth/utils/resources/sizes_in_app.dart';
 import 'package:chat_app_auth/utils/resources/strings_in_app.dart';
+import 'package:chat_app_auth/utils/validate_extension.dart';
 import 'package:chat_app_auth/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 const SizedBox(height: 40),
                 CustomTextField(
-                  validator: (val) => Validator2.validateName(val ?? ''),
+                  validator: (val) => val!.validateUserName(),
                   textInputAction: TextInputAction.next,
                   controller: nameController,
                   hintText: AppStrings.fullName,
@@ -100,8 +101,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 14),
                 CustomTextField(
                   controller: phoneController,
-                  // validator: (val) =>
-                  //     Validator2.validatePhoneNumber(val ?? ''),
+                  validator: (val) => val!.validatePhoneNumber(),
                   hintText: AppStrings.phone,
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 14),
                 CustomTextField(
                   controller: passwordController,
-                  // validator: (val) => Validator.passwordCorrect(val ?? ''),
+                  validator: (val) => val!.validatePassword(),
                   suffix: GestureDetector(
                     onTap: () {
                       value.isVisibility();
@@ -122,10 +122,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? const Icon(
                             Icons.visibility_off,
                             size: 18,
+                            color: ColorManager.white,
                           )
-                        : const Icon(Icons.visibility, size: 18),
+                        : const Icon(
+                            Icons.visibility,
+                            size: 18,
+                            color: ColorManager.white,
+                          ),
                   ),
-                  obscureText: true,
+                  obscureText: value.visibility,
                   hintText: AppStrings.password,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.next,

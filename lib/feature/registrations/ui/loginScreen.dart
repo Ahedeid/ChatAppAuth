@@ -9,7 +9,7 @@ import 'package:chat_app_auth/utils/resources/font_size.dart';
 import 'package:chat_app_auth/utils/resources/icons_constant.dart';
 import 'package:chat_app_auth/utils/resources/sizes_in_app.dart';
 import 'package:chat_app_auth/utils/resources/strings_in_app.dart';
-import 'package:chat_app_auth/utils/validator.dart';
+import 'package:chat_app_auth/utils/validate_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 40),
                     CustomTextField(
                       controller: emailController,
-                      validator: (val) => Validator2.validateEmail(val ?? ''),
+                      validator: (val) => val!.validateEmail(),
                       hintText: AppStrings.email,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
@@ -93,11 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: ColorManager.white,
                                 size: 18,
                               )
-                            : const Icon(Icons.visibility,
-                                color: ColorManager.white, size: 18),
+                            : const Icon(
+                                Icons.visibility,
+                                color: ColorManager.white,
+                                size: 18,
+                              ),
                       ),
-                      validator: (val) =>
-                          Validator2.validatePassword(val ?? ''),
+                      validator: (val) => val!.validatePassword(),
                       obscureText: value.visibility,
                       hintText: AppStrings.password,
                       keyboardType: TextInputType.visiblePassword,
@@ -119,8 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ),
-                    SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.1),
+                    SizedBox(height: MediaQuery.sizeOf(context).height * 0.1),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
